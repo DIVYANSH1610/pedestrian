@@ -2,29 +2,22 @@ import cv2
 import torch
 import os
 import time
-import numpy as np   # 👈 ADD THIS LINE
+import numpy as np   
 from ultralytics import YOLO
 from shapely.geometry import Polygon, Point
 
-
-# === CONFIG ===
 video_source = "data/sample_video.mp4"
 save_path = "data/snapshots"
 model_path = "yolov8n.pt"
 
-# === SETUP ===
 os.makedirs(save_path, exist_ok=True)
 model = YOLO(model_path)
 print("✅ YOLOv8 model loaded successfully!")
 
-# Define your pedestrian zone polygon (adjust as needed)
-# Coordinates are (x, y) format
-# Define pedestrian zone polygon (x, y coordinates)
-zone_points = [(100, 400), (500, 400), (500, 600), (100, 600)]  # adjust these values based on your video frame
+zone_points = [(100, 400), (500, 400), (500, 600), (100, 600)]  
 zone_points = [(100, 450), (600, 450), (700, 300), (200, 300)]
 zone_polygon = Polygon(zone_points)
 
-# === VIDEO CAPTURE ===
 cap = cv2.VideoCapture(video_source)
 if not cap.isOpened():
     print("❌ Cannot open video source.")
@@ -39,7 +32,6 @@ while True:
 
     results = model(frame, stream=True)
 
-    # Draw zone area
     cv2.polylines(frame, [np.array(zone_points, np.int32)], True, (0, 255, 255), 2)
     cv2.putText(frame, "Pedestrian Zone", (zone_points[0][0], zone_points[0][1] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
@@ -57,17 +49,15 @@ while True:
 
                 point = Point(cx, cy)
                 if zone_polygon.contains(point):
-                    # Violation Detected
-                    color = (0, 0, 255)  # Red for violation
+                    color = (0, 0, 255) 
                     cv2.putText(frame, "🚫 Vehicle in Pedestrian Zone!", (30, 50),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
 
-                    # Save snapshot
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filename = os.path.join(save_path, f"violation_{timestamp}.jpg")
                     cv2.imwrite(filename, frame)
                 else:
-                    color = (0, 255, 0)  # Green if outside
+                    color = (0, 255, 0) 
 
                 cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 2)
                 cv2.circle(frame, (cx, cy), 5, color, -1)
