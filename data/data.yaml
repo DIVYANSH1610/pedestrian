@@ -1,0 +1,11 @@
+# YOLOv8 Dataset Configuration
+
+# Absolute paths (recommended)
+train: C:/Users/divya/DSA/Pedestrian_Zone_Vehicle_Entry_Detection/data/images
+val: C:/Users/divya/DSA/Pedestrian_Zone_Vehicle_Entry_Detection/data/images
+
+# Number of classes
+nc: 8
+
+# Class names
+names: ['Bus', 'Car', 'Lorry', 'Motorcycles', 'Pedestrian', 'Small Lorry', 'Truck', 'Van']
