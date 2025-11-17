@@ -1,0 +1,19 @@
+names:
+- Bus
+- Car
+- Human
+- Lorry
+- Motorcycle
+- Pedestrian
+- Truck
+- Van
+nc: 8
+roboflow:
+  license: CC BY 4.0
+  project: pedestrian-zone-h8rtt
+  url: https://universe.roboflow.com/divyansh-lgcgu/pedestrian-zone-h8rtt/dataset/3
+  version: 3
+  workspace: divyansh-lgcgu
+test: ../test/images
+train: ../train/images
+val: ../valid/images
